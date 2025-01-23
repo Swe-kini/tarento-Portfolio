@@ -16,26 +16,8 @@ public class SkillController {
     private SkillService skillService;
 
     // Get all skills for a specific user
-    @GetMapping("/user/{userId}")
-    public List<Skill> getSkillsByUserId(@PathVariable Long userId) {
-        return skillService.getSkillsByUserId(userId);
-    }
-
-    // Add a new skill
-    @PostMapping
-    public Skill addSkill(@RequestBody Skill skill) {
-        return skillService.addSkill(skill);
-    }
-
-    // Update an existing skill
-    @PutMapping("/{id}")
-    public Skill updateSkill(@PathVariable Long id, @RequestBody Skill updatedSkill) {
-        return skillService.updateSkill(id, updatedSkill);
-    }
-
-    // Delete a skill by ID
-    @DeleteMapping("/{id}")
-    public void deleteSkill(@PathVariable Long id) {
-        skillService.deleteSkill(id);
+    @GetMapping
+    public List<Skill> getAllSkills() {
+        return skillService.getAllSkills();
     }
 }

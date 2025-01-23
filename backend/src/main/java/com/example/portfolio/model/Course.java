@@ -12,7 +12,5 @@ public class Course {
     private String provider;
     private String completionDate;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+
 }

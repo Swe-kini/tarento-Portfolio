@@ -4,10 +4,6 @@ import com.example.portfolio.model.Education;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 @Repository
-public interface EducationRepository extends JpaRepository<Education, Long> {
-    // Find education records by the associated user's ID
-    List<Education> findByUser_Id(Long userId);
-}
+public interface EducationRepository extends JpaRepository<Education, Long> {}

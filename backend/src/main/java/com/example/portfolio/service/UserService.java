@@ -5,41 +5,28 @@ import com.example.portfolio.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
+import java.util.List;
+import java.util.Optional;
+
+@Service  // Add this annotation to make this class a Spring bean
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
 
-    // Get user by ID
+    // Get all users
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    // Get user by ID (with related entities like skills, projects)
     public User getUserById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get(); // Trigger loading of courses
+            return user;
+        }
+        return null;
     }
 
-    // Add a new user
-    public User addUser(User user) {
-        return userRepository.save(user);
-    }
-
-    // Update user details
-    public User updateUser(Long id, User updatedUser) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        user.setName(updatedUser.getName());
-        user.setEmail(updatedUser.getEmail());
-        user.setPhone(updatedUser.getPhone());
-        user.setLinkedin(updatedUser.getLinkedin());
-        user.setGithub(updatedUser.getGithub());
-        user.setDescription(updatedUser.getDescription());
-        user.setProfilePic(updatedUser.getProfilePic());
-        return userRepository.save(user);
-    }
-
-    // Delete a user by ID
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
-    }
 }
-

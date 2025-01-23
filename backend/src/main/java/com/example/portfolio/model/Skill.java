@@ -11,9 +11,5 @@ public class Skill {
     private Long id;
 
     private String name;
-    private String level; // Beginner, Intermediate, Expert
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user; // Associated user
+    private String level; 
 }

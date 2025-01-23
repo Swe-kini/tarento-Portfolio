@@ -3,8 +3,12 @@ package com.example.portfolio.controller;
 import com.example.portfolio.model.User;
 import com.example.portfolio.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@CrossOrigin(origins = "http://localhost:5177") // Allows requests from the frontend
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -12,27 +16,25 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // Get user by ID
+    // Get all users (for listing all users if necessary)
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        if (users.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Respond with 204 if no users found
+        }
+        return ResponseEntity.ok(users); // Respond with 200 and the list of users
+    }
+
+    // Get user by ID (fetch single user with related entities like skills, projects, etc.)
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id); // Fetch user along with related data
+        if (user == null) {
+            return ResponseEntity.notFound().build(); // Respond with 404 if user not found
+        }
+        return ResponseEntity.ok(user); // Respond with 200 and the user
     }
 
-    // Add a new user
-    @PostMapping
-    public User addUser(@RequestBody User user) {
-        return userService.addUser(user);
-    }
 
-    // Update user details
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        return userService.updateUser(id, updatedUser);
-    }
-
-    // Delete a user by ID
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-    }
 }

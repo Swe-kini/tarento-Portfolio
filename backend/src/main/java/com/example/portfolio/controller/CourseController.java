@@ -16,25 +16,8 @@ public class CourseController {
 
     // Get all courses for a specific user
     @GetMapping("/user/{userId}")
-    public List<Course> getCoursesByUserId(@PathVariable Long userId) {
-        return courseService.getCoursesByUserId(userId);
+    public List<Course> getAllCourses() {
+        return courseService.getAllCourses();
     }
 
-    // Add a new course
-    @PostMapping
-    public Course addCourse(@RequestBody Course course) {
-        return courseService.addCourse(course);
-    }
-
-    // Update an existing course
-    @PutMapping("/{id}")
-    public Course updateCourse(@PathVariable Long id, @RequestBody Course updatedCourse) {
-        return courseService.updateCourse(id, updatedCourse);
-    }
-
-    // Delete a course by ID
-    @DeleteMapping("/{id}")
-    public void deleteCourse(@PathVariable Long id) {
-        courseService.deleteCourse(id);
-    }
 }

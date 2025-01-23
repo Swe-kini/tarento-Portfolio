@@ -12,9 +12,5 @@ public class Education {
 
     private String degree;
     private String institution;
-    private int year;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String year;   
 }
