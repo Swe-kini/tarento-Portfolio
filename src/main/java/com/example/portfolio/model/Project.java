@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @Entity
@@ -20,12 +18,8 @@ public class Project {
     private String details; // Detailed information about the project
     private String techStack; // Technologies used
     private String link; // GitHub or live demo link
+    private String image; 
 
-    @Lob // Specifies that the column should handle large text or binary data
-    @Column(columnDefinition = "TEXT") // Ensures the database column uses the TEXT type
-    private String explanation; // Detailed explanation of the project
-
-    // One-to-many relationship with ProjectImage
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProjectImage> images; // List of images associated with the project
+    @Column(columnDefinition = "TEXT") // Allows storing large HTML content
+    private String explanation; // Detailed explanation in HTML format
 }

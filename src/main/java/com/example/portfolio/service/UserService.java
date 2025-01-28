@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service  // Add this annotation to make this class a Spring bean
+@Service
 public class UserService {
 
     @Autowired
@@ -19,14 +19,36 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    // Get user by ID (with related entities like skills, projects)
-    public User getUserById(Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get(); // Trigger loading of courses
-            return user;
-        }
-        return null;
+    // Get user by ID
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
     }
 
+    // Create a new user
+    public User createUser(User user) {
+        return userRepository.save(user);
+    }
+
+    // Update an existing user
+    public User updateUser(Long id, User updatedUser) {
+        return userRepository.findById(id).map(user -> {
+            user.setName(updatedUser.getName());
+            user.setEmail(updatedUser.getEmail());
+            user.setPhone(updatedUser.getPhone());
+            user.setLinkedin(updatedUser.getLinkedin());
+            user.setGithub(updatedUser.getGithub());
+            user.setDescription(updatedUser.getDescription());
+            user.setProfilePic(updatedUser.getProfilePic());
+            return userRepository.save(user);
+        }).orElse(null); // Return null if the user isn't found
+    }
+
+    // Delete a user by ID
+    public boolean deleteUser(Long id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5174")  // Allow requests from your frontend
+@CrossOrigin(origins = "http://localhost:5173")  // Allow requests from your frontend
 @RestController
 @RequestMapping("/api/skills")  // Base path for this controller
 public class SkillController {
@@ -47,10 +47,10 @@ public class SkillController {
 
     // Delete a skill
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSkill(@PathVariable Long id) {
-        if (skillService.deleteSkill(id)) {
-            return ResponseEntity.noContent().build(); // HTTP 204 No Content
-        }
-        return ResponseEntity.notFound().build(); // HTTP 404 Not Found
+public ResponseEntity<String> deleteSkill(@PathVariable Long id) {
+    if (skillService.deleteSkill(id)) {
+        return ResponseEntity.ok("Skill deleted successfully"); // HTTP 200 OK with success message
     }
+    return ResponseEntity.notFound().build(); // HTTP 404 Not Found
+}
 }
