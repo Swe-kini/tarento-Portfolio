@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "java",
+        "name": "PortfolioApplication",
+        "request": "launch",
+        "mainClass": "com.example.portfolio.PortfolioApplication",
+        "projectName": ""
+      },
+      {
+        "type": "java",
+        "name": "Launch PortfolioApplication",
+        "request": "launch",
+        "mainClass": "com.example.portfolio.PortfolioApplication",
+        "projectName": "portfolio",
+        "args": []
+      }
+    ]
+  }
+  
