@@ -3,6 +3,13 @@
     "configurations": [
       {
         "type": "java",
+        "name": "AdminUserInit",
+        "request": "launch",
+        "mainClass": "com.example.portfolio.model.AdminUserInit",
+        "projectName": "portfolio"
+      },
+      {
+        "type": "java",
         "name": "PortfolioApplication",
         "request": "launch",
         "mainClass": "com.example.portfolio.PortfolioApplication",
