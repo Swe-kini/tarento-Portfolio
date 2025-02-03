@@ -32,15 +32,15 @@ public class AdminController {
         return ResponseEntity.ok("User created successfully");
     }
 
-    
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AppUser user) {
-        Optional<AppUser> existingUser = userRepository.findByUsername(user.getUsername());
+public ResponseEntity<String> login(@RequestBody AppUser user) {
+    Optional<AppUser> existingUser = userRepository.findByUsername(user.getUsername());
 
-        if (existingUser.isPresent() && passwordEncoder.matches(user.getPassword(), existingUser.get().getPassword())) {
-            return ResponseEntity.ok("Login successful");
-        } else {
-            return ResponseEntity.status(401).body("Invalid credentials");
-        }
+    if (existingUser.isPresent() && passwordEncoder.matches(user.getPassword(), existingUser.get().getPassword())) {
+        return ResponseEntity.ok("Authenticated"); // Return success message
+    } else {
+        return ResponseEntity.status(401).body("Invalid credentials");
     }
+}
+
 }
