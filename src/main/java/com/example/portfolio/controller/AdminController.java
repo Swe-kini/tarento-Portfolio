@@ -42,5 +42,32 @@ public ResponseEntity<String> login(@RequestBody AppUser user) {
         return ResponseEntity.status(401).body("Invalid credentials");
     }
 }
+@PutMapping("/app_users/{id}")
+public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody AppUser updatedUser) {
+    Optional<AppUser> existingUser = userRepository.findById(id);
+
+    if (existingUser.isPresent()) {
+        AppUser user = existingUser.get();
+        user.setUsername(updatedUser.getUsername());
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
+        userRepository.save(user);
+        return ResponseEntity.ok("User updated successfully");
+    } else {
+        return ResponseEntity.status(404).body("User not found");
+    }
+}
+
+@DeleteMapping("/app_users/{id}")
+public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+    if (userRepository.existsById(id)) {
+        userRepository.deleteById(id);
+        return ResponseEntity.ok("User deleted successfully");
+    } else {
+        return ResponseEntity.status(404).body("User not found");
+    }
+}
+
 
 }

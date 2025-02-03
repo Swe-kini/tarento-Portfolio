@@ -26,7 +26,6 @@ public class SecurityConfig {
             .csrf().disable() // Disable CSRF for login
             .authorizeHttpRequests()
             .requestMatchers("/admin/login").permitAll() // Allow login without authentication
-            .requestMatchers("/admin/app_users").authenticated() // Keep users protected
 
             .anyRequest().permitAll() // Secure other endpoints
             .and()
