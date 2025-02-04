@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:5173") 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api")
 public class AdminController {
 
     private final AppUserRepository userRepository;
@@ -20,12 +20,12 @@ public class AdminController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping("/app_users")
+    @GetMapping("/admin")
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok(userRepository.findAll());
     }
 
-    @PostMapping("/app_users")
+    @PostMapping("/admin")
     public ResponseEntity<String> createUser(@RequestBody AppUser user) {
         user.setPassword(passwordEncoder.encode(user.getPassword())); // Encrypt password before saving
         userRepository.save(user);
@@ -42,7 +42,7 @@ public ResponseEntity<String> login(@RequestBody AppUser user) {
         return ResponseEntity.status(401).body("Invalid credentials");
     }
 }
-@PutMapping("/app_users/{id}")
+@PutMapping("/admin/{id}")
 public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody AppUser updatedUser) {
     Optional<AppUser> existingUser = userRepository.findById(id);
 
@@ -59,7 +59,7 @@ public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody App
     }
 }
 
-@DeleteMapping("/app_users/{id}")
+@DeleteMapping("/admin/{id}")
 public ResponseEntity<String> deleteUser(@PathVariable Long id) {
     if (userRepository.existsById(id)) {
         userRepository.deleteById(id);

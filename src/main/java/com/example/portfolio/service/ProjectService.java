@@ -42,7 +42,7 @@ public class ProjectService {
                     existingProject.setDetails(projectDetails.getDetails());
                     existingProject.setTechStack(projectDetails.getTechStack());
                     existingProject.setLink(projectDetails.getLink());
-                    // existingProject.setExplanation(projectDetails.getExplanation());
+                    existingProject.setExplanation(projectDetails.getExplanation());
                     return projectRepository.save(existingProject);
                 })
                 .orElseThrow(() -> new RuntimeException("Project not found with ID: " + id));
