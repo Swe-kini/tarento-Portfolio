@@ -3,13 +3,16 @@ package com.example.portfolio.controller;
 import com.example.portfolio.model.User;
 import com.example.portfolio.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
+// import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:5173") // Allows requests from the frontend
+@CrossOrigin(origins = "http://localhost:5173") // Allows frontend requests
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -21,45 +24,64 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
-        if (users.isEmpty()) {
-            return ResponseEntity.noContent().build(); // 204 if no users
-        }
-        return ResponseEntity.ok(users); // 200 with user list
+        return users.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(users);
     }
 
     // Get a user by ID
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        Optional<User> user = userService.getUserById(id);
-        if (user.isPresent()) {
-            return ResponseEntity.ok(user.get()); // 200 with user
-        }
-        return ResponseEntity.notFound().build(); // 404 if user not found
+        return userService.getUserById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // Create a new user
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
-        return ResponseEntity.ok(createdUser); // 200 with created user
+    
+    // Create a new user with profile picture upload
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<User> createUser(
+            @RequestParam("name") String name,
+            @RequestParam("email") String email,
+            @RequestParam("phone") String phone,
+            @RequestParam("linkedin") String linkedin,
+            @RequestParam("github") String github,
+            @RequestParam("description") String description,
+            @RequestParam(value = "profilePic", required = false) MultipartFile profilePic) {
+
+        try {
+            User user = userService.createUser(name, email, phone, linkedin, github, description, profilePic);
+            return ResponseEntity.ok(user);
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
-    // Update an existing user
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        User user = userService.updateUser(id, updatedUser);
-        if (user == null) {
-            return ResponseEntity.notFound().build(); // 404 if user not found
+    // Update user profile with an optional profile picture
+    @PutMapping(value = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<User> updateUser(
+            @PathVariable Long id,
+            @RequestParam("name") String name,
+            @RequestParam("email") String email,
+            @RequestParam("phone") String phone,
+            @RequestParam("linkedin") String linkedin,
+            @RequestParam("github") String github,
+            @RequestParam("description") String description,
+            @RequestParam(value = "profilePic", required = false) MultipartFile profilePic) {
+
+        try {
+            User updatedUser = userService.updateUser(id, name, email, phone, linkedin, github, description, profilePic);
+            return updatedUser != null ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().build();
         }
-        return ResponseEntity.ok(user); // 200 with updated user
     }
-// Delete a user
-@DeleteMapping("/{id}")
-public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-    boolean deleted = userService.deleteUser(id);
-    if (deleted) {
-        return ResponseEntity.ok("User deleted successfully"); // HTTP 200 OK with success message
+
+    // Delete a user
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        return userService.deleteUser(id)
+                ? ResponseEntity.ok("User deleted successfully")
+                : ResponseEntity.notFound().build();
     }
-    return ResponseEntity.notFound().build(); // HTTP 404 Not Found
-}
+    
+
 }

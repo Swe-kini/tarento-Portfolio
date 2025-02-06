@@ -3,7 +3,6 @@ package com.example.portfolio.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-
 @Data
 @Entity
 @Table(name = "users")
@@ -19,10 +18,11 @@ public class User {
     private String linkedin;
     private String github;
     private String description;
-    private String profilePic; // URL to the profile picture
+
+    @Lob
+    @Column(name = "profile_pic", columnDefinition = "bytea")
+    private byte[] profilePic; // Store image as binary data
 
     @Version
-    private Integer version;  // Hibernate will handle this field for optimistic locking
-
-    
+    private Integer version;  // Hibernate will handle optimistic locking
 }

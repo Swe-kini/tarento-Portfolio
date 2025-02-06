@@ -18,7 +18,10 @@ public class Project {
     private String details; // Detailed information about the project
     private String techStack; // Technologies used
     private String link; // GitHub or live demo link
-    private String image; 
+
+    @Lob
+    @Column(name = "image", columnDefinition = "bytea") // Store image as binary data
+    private byte[] image; // Image stored as byte array
 
     @Column(columnDefinition = "TEXT") // Allows storing large HTML content
     private String explanation; // Detailed explanation in HTML format
