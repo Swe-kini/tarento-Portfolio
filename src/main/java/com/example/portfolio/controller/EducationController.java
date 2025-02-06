@@ -7,9 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-@CrossOrigin(origins = "http://localhost:5173")  // Allow requests from your frontend
 @RestController
+@CrossOrigin(origins = "http://localhost:5173") 
 @RequestMapping("/api/education")  // Base path for this controller
 public class EducationController {
 
