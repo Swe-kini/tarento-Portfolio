@@ -25,7 +25,7 @@ public class SecurityConfig {
             .and()
             .csrf().disable() // Disable CSRF for login
             .authorizeHttpRequests()
-            .requestMatchers("/admin/login").permitAll() // Allow login without authentication
+            .requestMatchers("/api/login").permitAll() // Allow login without authentication
 
             .anyRequest().permitAll() // Secure other endpoints
             .and()

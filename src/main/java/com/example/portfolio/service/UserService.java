@@ -16,17 +16,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    // Get all users
+   
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    // Get user by ID
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
-    // Create a new user with an optional profile picture
     public User createUser(String name, String email, String phone, String linkedin, String github, String description, MultipartFile profilePic) throws IOException {
         User user = new User();
         user.setName(name);
@@ -41,7 +39,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // Update an existing user with an optional profile picture
+    
     public User updateUser(Long id, String name, String email, String phone, String linkedin, String github, String description, MultipartFile profilePic) throws IOException {
         return userRepository.findById(id).map(user -> {
             user.setName(name);
@@ -61,7 +59,7 @@ public class UserService {
         }).orElse(null);
     }
 
-    // Delete a user by ID
+   
     public boolean deleteUser(Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);

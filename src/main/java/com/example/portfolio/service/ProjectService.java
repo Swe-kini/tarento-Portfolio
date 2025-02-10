@@ -52,9 +52,14 @@ public class ProjectService {
             existingProject.setDescription(description);
             existingProject.setDetails(details);
             existingProject.setTechStack(techStack);
-            existingProject.setLink(link);
+            
             existingProject.setExplanation(explanation);
 
+            if (link != null && !link.isEmpty()) {
+                existingProject.setLink(link);
+            } else {
+                existingProject.setLink(null); 
+            }
             if (image != null && !image.isEmpty()) {
                 existingProject.setImage(image.getBytes());
             }

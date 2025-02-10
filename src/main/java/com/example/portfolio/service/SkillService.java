@@ -14,22 +14,21 @@ public class SkillService {
     @Autowired
     private SkillRepository skillRepository;
 
-    // Get all skills
+   
     public List<Skill> getAllSkills() {
         return skillRepository.findAll();
     }
 
-    // Get a specific skill by ID
+   
     public Optional<Skill> getSkillById(Long id) {
         return skillRepository.findById(id);
     }
 
-    // Create a new skill
     public Skill createSkill(Skill skill) {
         return skillRepository.save(skill);
     }
 
-    // Update an existing skill
+    
     public Optional<Skill> updateSkill(Long id, Skill updatedSkill) {
         return skillRepository.findById(id).map(existingSkill -> {
             existingSkill.setName(updatedSkill.getName());
@@ -38,7 +37,7 @@ public class SkillService {
         });
     }
 
-    // Delete a skill
+   
     public boolean deleteSkill(Long id) {
         if (skillRepository.existsById(id)) {
             skillRepository.deleteById(id);

@@ -10,9 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-// import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:5173") // Allows frontend requests
+
+@CrossOrigin(origins = "http://localhost:5173") 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -20,14 +20,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // Get all users
+   
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         return users.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(users);
     }
 
-    // Get a user by ID
+    
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return userService.getUserById(id)
@@ -36,7 +36,7 @@ public class UserController {
     }
 
     
-    // Create a new user with profile picture upload
+   
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<User> createUser(
             @RequestParam("name") String name,
@@ -55,7 +55,7 @@ public class UserController {
         }
     }
 
-    // Update user profile with an optional profile picture
+   
     @PutMapping(value = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<User> updateUser(
             @PathVariable Long id,
@@ -75,7 +75,7 @@ public class UserController {
         }
     }
 
-    // Delete a user
+  
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         return userService.deleteUser(id)

@@ -5,20 +5,23 @@ import com.example.portfolio.repository.AppUserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:5173") 
 @RestController
 @RequestMapping("/api")
+
 public class AdminController {
 
-    private final AppUserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private AppUserRepository userRepository;
 
-    public AdminController(AppUserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+  
+
 
     @GetMapping("/admin")
     public ResponseEntity<?> getAllUsers() {
@@ -27,7 +30,7 @@ public class AdminController {
 
     @PostMapping("/admin")
     public ResponseEntity<String> createUser(@RequestBody AppUser user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword())); // Encrypt password before saving
+        user.setPassword(passwordEncoder.encode(user.getPassword())); 
         userRepository.save(user);
         return ResponseEntity.ok("User created successfully");
     }
@@ -37,7 +40,7 @@ public ResponseEntity<String> login(@RequestBody AppUser user) {
     Optional<AppUser> existingUser = userRepository.findByUsername(user.getUsername());
 
     if (existingUser.isPresent() && passwordEncoder.matches(user.getPassword(), existingUser.get().getPassword())) {
-        return ResponseEntity.ok("Authenticated"); // Return success message
+        return ResponseEntity.ok("Authenticated"); 
     } else {
         return ResponseEntity.status(401).body("Invalid credentials");
     }

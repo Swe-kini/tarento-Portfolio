@@ -14,22 +14,21 @@ public class CourseService {
     @Autowired
     private CourseRepository courseRepository;
 
-    // Get all courses
+   
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
     }
 
-    // Get a specific course by ID
     public Optional<Course> getCourseById(Long id) {
         return courseRepository.findById(id);
     }
 
-    // Create a new course
+    
     public Course createCourse(Course course) {
         return courseRepository.save(course);
     }
 
-    // Update an existing course
+    
     public Optional<Course> updateCourse(Long id, Course updatedCourse) {
         return courseRepository.findById(id).map(existingCourse -> {
             existingCourse.setName(updatedCourse.getName());
@@ -39,7 +38,7 @@ public class CourseService {
         });
     }
 
-    // Delete a course
+   
     public boolean deleteCourse(Long id) {
         if (courseRepository.existsById(id)) {
             courseRepository.deleteById(id);
